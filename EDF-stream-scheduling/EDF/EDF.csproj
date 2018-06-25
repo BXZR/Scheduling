@@ -59,6 +59,9 @@
       <DependentUpon>Operate.xaml</DependentUpon>
     </Compile>
     <Compile Include="stream.cs" />
+    <Compile Include="StreamShower.xaml.cs">
+      <DependentUpon>StreamShower.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Picture.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StreamShower.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

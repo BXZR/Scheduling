@@ -32,7 +32,7 @@ namespace EDF
         {
             InitializeComponent();
             tm.Tick += new EventHandler(tm_Tick);
-            tm.Interval = TimeSpan.FromSeconds(0.5 * timerScale);
+            tm.Interval = TimeSpan.FromSeconds(0.01 * timerScale);
         }
 
 
@@ -40,15 +40,15 @@ namespace EDF
         public void getStream(stream theStream)
         {
             int CPUIndex = getCPUIndexCanUse();
-            for (int i = theControlers[CPUIndex].allTimer; i < theStream.timeSlot; i++)
+            for (int i = theControlers[CPUIndex].allTimer; i < theStream.allTimeUse; i++)
             {
                 for (int j = 0; j < theControlers.Count; j++)
                     theControlers[j].forTimer();
                 flashWindow();
             }
 
-            Console.WriteLine(this.Title + "get theStream and send to " + CPUIndex);
-            charge newChargeForBook = new charge(1, theStream.circleTime, theStream.deadLine, 1, theControlers[CPUIndex].allTimer, theStream.theName + "（第" + theStream.indexNow + "跳）", theControlers[CPUIndex], false);
+            //Console.WriteLine(this.Title + "get "+ theStream .theName+ " and send to " + CPUIndex);
+            charge newChargeForBook = new charge(theStream.timeSlot, theStream.circleTime, theStream.deadLine, 1, theControlers[CPUIndex].allTimer, theStream.theName + "（第" + theStream.indexNow + "跳）", theControlers[CPUIndex], false);
             newChargeForBook.theStreamforCharge = theStream;
             newChargeForBook.theMainWindow = this;
 
@@ -430,7 +430,7 @@ namespace EDF
 
         public void ChangeCPUCount(int  newCount)
         {
-            Console.WriteLine("change -->"+newCount);
+            //Console.WriteLine("change -->"+newCount);
             theControlers = new List<controller>();
             for (int i = 0; i < newCount; i++)
             {

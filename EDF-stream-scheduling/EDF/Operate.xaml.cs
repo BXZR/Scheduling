@@ -16,12 +16,49 @@ namespace EDF
     /// <summary>
     /// Interaction logic for Operate.xaml
     /// </summary>
+    /// 
+
+
+    public class streamShowing
+    {
+        private string thename = "";
+        public string theName { get { return thename; } }
+        private string jump = "";
+        public string theJumps { get { return jump; } }
+        private string time = "";
+        public string theTime { get { return time; } }
+
+        public streamShowing(string nameIn, string jumpIn, string timeIn)
+        {
+            thename = nameIn;
+            jump = jumpIn;
+            time = timeIn;
+        }
+
+        public streamShowing(stream aStream)
+        {
+            thename = aStream.theName;
+            jump = aStream.thePlanRoute.Count.ToString("f0");
+            time = aStream.allTimeUse.ToString("f0");
+        }
+    }
     public partial class Operate : Window
     {
 
         public static string theStringForOperate = "";
         public static List<stream> theStreams = new List<stream>();
         public static List<MainWindow> thePoints = new List<MainWindow>();
+        public static List<streamShowing> thestreamShows = new List<streamShowing>();
+
+        int pointCount = 10;
+
+        public static bool isAllOver()
+        {
+            for (int i = 0; i < theStreams.Count; i++)
+                if (theStreams[i].isOver == false)
+                    return false;
+            return true;
+        }
 
         public Operate()
         {
@@ -76,6 +113,7 @@ namespace EDF
 
         private void CPUCount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            makePoints();
             changeCPUCount();
         }
 
@@ -105,7 +143,7 @@ namespace EDF
         }
 
         //----------------------------------------------------------------------------
-        private void makePoints(int pointCount = 10)
+        private void makePoints()
         {
             thePoints = new List<MainWindow>();
             for (int i = 0; i < pointCount; i++)
@@ -173,56 +211,44 @@ namespace EDF
         //thePoints[0]代表第一个节点
         private void setStreams()
         {
-
-            stream Stream1 = new EDF.stream(20, 25, "数据流1");
+            //创建一个流
+            stream Stream1 = new EDF.stream(20, 25, "数据流01");
+            //设定流的路径
             Stream1.thePlanRoute.Add(thePoints[0]);
             Stream1.thePlanRoute.Add(thePoints[2]);
             Stream1.thePlanRoute.Add(thePoints[6]);
             Stream1.thePlanRoute.Add(thePoints[9]);
+            //设定主路径
+            Stream1.setMainRoute(true);
+            //起点获取流
             thePoints[0].getStream(Stream1);
 
-            stream Stream2 = new EDF.stream(15, 30, "数据流2");
+            stream Stream2 = new EDF.stream(15, 30, "数据流02");
             Stream2.thePlanRoute.Add(thePoints[0]);
             Stream2.thePlanRoute.Add(thePoints[3]);
-            Stream2.thePlanRoute.Add(thePoints[6]);
-            Stream2.thePlanRoute.Add(thePoints[9]);
+            Stream2.thePlanRoute.Add(thePoints[7]);
+            Stream2.setMainRoute(true);
             thePoints[0].getStream(Stream2);
 
-            stream Stream3 = new EDF.stream(20, 31, "数据流3");
+            stream Stream3 = new EDF.stream(20, 31, "数据流03");
             Stream3.thePlanRoute.Add(thePoints[0]);
-            Stream3.thePlanRoute.Add(thePoints[2]);
-            Stream3.thePlanRoute.Add(thePoints[5]);
+            Stream3.thePlanRoute.Add(thePoints[1]);
+            Stream3.thePlanRoute.Add(thePoints[4]);
             Stream3.thePlanRoute.Add(thePoints[8]);
-            Stream3.thePlanRoute.Add(thePoints[9]);
+            Stream3.setMainRoute(true);
             thePoints[0].getStream(Stream3);
-
-            stream Stream4 = new EDF.stream(17, 33, "数据流4");
-            Stream4.thePlanRoute.Add(thePoints[0]);
-            Stream4.thePlanRoute.Add(thePoints[1]);
-            Stream4.thePlanRoute.Add(thePoints[5]);
-            Stream4.thePlanRoute.Add(thePoints[8]);
-            Stream4.thePlanRoute.Add(thePoints[9]);
-            thePoints[0].getStream(Stream4);
-
-            stream Stream5 = new EDF.stream(18, 33, "数据流5");
-            Stream5.thePlanRoute.Add(thePoints[0]);
-            Stream5.thePlanRoute.Add(thePoints[1]);
-            Stream5.thePlanRoute.Add(thePoints[5]);
-            Stream5.thePlanRoute.Add(thePoints[8]);
-            Stream5.thePlanRoute.Add(thePoints[9]);
-            thePoints[0].getStream(Stream5);
 
 
             theStreams.Add(Stream1);
             theStreams.Add(Stream2);
             theStreams.Add(Stream3);
-            theStreams.Add(Stream4);
-            theStreams.Add(Stream5);
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            makePoints(10);//传入10就是说有10个节点，请注意数组下标不可以越界的 10对应0——9
+            thestreamShows = new List<streamShowing>();
+            makePoints();//传入10就是说有10个节点，请注意数组下标不可以越界的 10对应0——9
             changeCPUCount();
         }
     }

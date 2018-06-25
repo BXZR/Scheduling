@@ -181,23 +181,31 @@ namespace EDF
                 return;
             if (charges.Contains(theCharge))
             {
-                if (theCharge.theStreamforCharge != null && theCharge.theStreamforCharge.thePlanRoute.Count > 0 )
+                if (theCharge.theStreamforCharge != null && theCharge.theStreamforCharge.thePlanRoute.Count > 0 && theCharge.theStreamforCharge.isOver == false)
                 {
                     int timeUseForThisStream = this.allTimer - theCharge.StartTime;
-                    theCharge.theStreamforCharge.timeSlot += timeUseForThisStream;
+                    theCharge.theStreamforCharge.allTimeUse += timeUseForThisStream;
                     theCharge.theStreamforCharge.indexNow++;
                     if (theCharge.theStreamforCharge.indexNow < theCharge.theStreamforCharge.thePlanRoute.Count)
                     {
                         theMainWindow.textForInformation += theCharge.Name + "转到下一个节点\n";
                         theCharge.theStreamforCharge.thePlanRoute[theCharge.theStreamforCharge.indexNow].getStream(theCharge.theStreamforCharge);
                     }
-                    else if (theCharge.theStreamforCharge.thePlanRoute[theCharge.theStreamforCharge.thePlanRoute.Count - 1] == this.theMainWindow && theCharge.theStreamforCharge.indexNow == theCharge.theStreamforCharge.thePlanRoute.Count)
+                    else if (theCharge.theStreamforCharge.indexNow == theCharge.theStreamforCharge.thePlanRoute.Count)
                     {
-
-                        Operate.theStringForOperate += theCharge.theStreamforCharge.theName + ":\n跳数：" + theCharge.theStreamforCharge.thePlanRoute.Count + "\ntimeSlot = " + theCharge.theStreamforCharge.timeSlot + "\n--------------------------\n";
-                        Operate.theStreams.Remove(theCharge.theStreamforCharge);
-                        if (Operate.theStreams.Count == 0)
-                            System.Windows.MessageBox.Show(Operate.theStringForOperate);
+                        //if(theCharge.theStreamforCharge.thePlanRoute[theCharge.theStreamforCharge.thePlanRoute.Count - 1] == this.theMainWindow )
+                            theCharge.theStreamforCharge.isOver = true;
+                        Operate.theStringForOperate += theCharge.theStreamforCharge.theName + ":\n跳数：" + theCharge.theStreamforCharge.thePlanRoute.Count + "\ntimeSlot = " + theCharge.theStreamforCharge.allTimeUse + "\n--------------------------\n";
+                        //if (Operate.isAllOver())
+                        //    System.Windows.MessageBox.Show(Operate.theStringForOperate);
+                        Operate.thestreamShows.Add(new streamShowing(theCharge.theStreamforCharge.theName + "   ", theCharge.theStreamforCharge.thePlanRoute.Count.ToString("f0") + "   ", theCharge.theStreamforCharge.allTimeUse.ToString("f0")+"   "));
+                        if (Operate.isAllOver())
+                        {
+                            StreamShower A = new StreamShower();
+                            A.streamDataShow.ItemsSource = Operate.thestreamShows;
+                            A.Show();
+                            Console.WriteLine("OVER");
+                        }
                     }
                 }
                 charges.Remove(theCharge);
