@@ -1,0 +1,10 @@
+﻿<Window x:Class="EDF.Picture"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="简单小图" Height="445" Width="780" Background="#FFBCCBA6">
+    <Grid>
+        <TextBox Margin="15,12,12,0" Name="TXT" Background="#2600FF00" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" IsReadOnly="True" Height="209" VerticalAlignment="Top" />
+        <Label Margin="12,0,0,27" Name="taskInformation" Height="152" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="506" />
+        <TextBox Background="#2600FF00" HorizontalScrollBarVisibility="Visible" IsReadOnly="True" Margin="0,0,12,27" Name="TextForInformation" VerticalScrollBarVisibility="Visible" Height="152" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="222" />
+    </Grid>
+</Window>
