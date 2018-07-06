@@ -26,7 +26,7 @@ namespace EDF
         public int ChargeLength { get { return chargeLength; } }
         public int DeadLine { get { return deadLine; } }
         private controller theController;
-        public stream theStreamforCharge;//这个任务用来调度的流
+        public stream theStreamforCharge = null;//这个任务用来调度的流
         public MainWindow theMainWindow;//这个任务所属的窗口
 
 
@@ -69,7 +69,8 @@ namespace EDF
                 information += "（必定超期）";
             return information;
         }
-        public charge(int chargeLength, int circleTime, int deadLine, int timerMax,int startTime,string name, controller theControllerIn , bool isValueAble = false)
+
+        public charge(int chargeLength, int circleTime, int deadLine, int timerMax , int startTime ,string name, controller theControllerIn , bool isValueAble = false)
         {
             this.chargeLength = chargeLength;
             this.circleTime = circleTime;

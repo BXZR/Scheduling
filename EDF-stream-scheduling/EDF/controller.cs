@@ -195,7 +195,7 @@ namespace EDF
                     {
                         //if(theCharge.theStreamforCharge.thePlanRoute[theCharge.theStreamforCharge.thePlanRoute.Count - 1] == this.theMainWindow )
                             theCharge.theStreamforCharge.isOver = true;
-                        Operate.theStringForOperate += theCharge.theStreamforCharge.theName + ":\n跳数：" + theCharge.theStreamforCharge.thePlanRoute.Count + "\ntimeSlot = " + theCharge.theStreamforCharge.allTimeUse + "\n--------------------------\n";
+                        Operate.theStringForOperate += theCharge.theStreamforCharge.theName + ":\n跳数：" + theCharge.theStreamforCharge.thePlanRoute.Count + "\ntimeUse = " + theCharge.theStreamforCharge.allTimeUse + "\n--------------------------\n";
                         //if (Operate.isAllOver())
                         //    System.Windows.MessageBox.Show(Operate.theStringForOperate);
                         Operate.thestreamShows.Add(new streamShowing(theCharge.theStreamforCharge.theName + "   ", theCharge.theStreamforCharge.thePlanRoute.Count.ToString("f0") + "   ", theCharge.theStreamforCharge.allTimeUse.ToString("f0")+"   "));

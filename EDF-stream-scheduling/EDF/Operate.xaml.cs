@@ -26,7 +26,7 @@ namespace EDF
         private string jump = "";
         public string theJumps { get { return jump; } }
         private string time = "";
-        public string theTime { get { return time; } }
+        public string TimeUse { get { return time; } }
 
         public streamShowing(string nameIn, string jumpIn, string timeIn)
         {

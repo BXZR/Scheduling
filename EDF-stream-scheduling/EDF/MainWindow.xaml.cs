@@ -39,16 +39,25 @@ namespace EDF
 
         public void getStream(stream theStream)
         {
-            int CPUIndex = getCPUIndexCanUse();
+            //int CPUIndex = getCPUIndexCanUse();
+
+            //选择冲突最小的信道来处理
+            int CPUIndex = getCPUIndexWithCanculate(theStream);
+
             for (int i = theControlers[CPUIndex].allTimer; i < theStream.allTimeUse; i++)
             {
                 for (int j = 0; j < theControlers.Count; j++)
                     theControlers[j].forTimer();
                 flashWindow();
             }
+            //
+            int timerWait = getWaitTimeForTheStream(theControlers[CPUIndex], theStream);
 
             //Console.WriteLine(this.Title + "get "+ theStream .theName+ " and send to " + CPUIndex);
-            charge newChargeForBook = new charge(theStream.timeSlot, theStream.circleTime, theStream.deadLine, 1, theControlers[CPUIndex].allTimer, theStream.theName + "（第" + theStream.indexNow + "跳）", theControlers[CPUIndex], false);
+            //在这里是一个模拟方案
+            //一个新的任务需要完成本身的时间和等待的时间才可以将这个流转移到下一个节点
+
+            charge newChargeForBook = new charge(theStream.timeSlot + timerWait, theStream.circleTime, theStream.deadLine, 1, theControlers[CPUIndex].allTimer, theStream.theName + "（第" + theStream.indexNow + "跳）", theControlers[CPUIndex] , false);
             newChargeForBook.theStreamforCharge = theStream;
             newChargeForBook.theMainWindow = this;
 
@@ -61,6 +70,76 @@ namespace EDF
 
         }
 
+
+        //获得这个任务的等待时间
+        int getWaitTimeForTheStream(controller theControllerChecked , stream theStreamUsing)
+        {
+
+            //如果是终点就没有必要了
+            if (theStreamUsing.indexNow == theStreamUsing.thePlanRoute.Count - 1)
+                return 0;
+
+
+            int timeWait = 0;
+
+            MainWindow thePointGet = theStreamUsing.thePlanRoute[theStreamUsing.indexNow];
+            MainWindow thePointSend = theStreamUsing.thePlanRoute[theStreamUsing.indexNow + 1];
+
+            for (int j = 0; j < theControllerChecked.charges.Count; j++)
+            {
+                stream theStream = theControllerChecked.charges[j].theStreamforCharge;
+                if (theStream != null && theStream.indexNow <= theStream.thePlanRoute.Count - 1)
+                {
+                    MainWindow theStart = theStream.thePlanRoute[theStream.indexNow];
+                    MainWindow theEnd = theStream.thePlanRoute[theStream.indexNow + 1];
+                    if (theStart == thePointGet || theEnd == thePointSend)
+                    {
+                        timeWait += theControllerChecked.charges[j].ChargeLength;
+                    }
+                }
+            }
+            return timeWait;
+        }
+
+        //选择一条冲突最小
+        int getCPUIndexWithCanculate(stream theStreamIn)
+        {
+            //如果是终点就没有必要了
+            if (theStreamIn.indexNow == theStreamIn.thePlanRoute.Count - 1)
+            {
+                return getCPUIndexCanUse();
+            }
+
+            MainWindow thePointGet =  theStreamIn.thePlanRoute[theStreamIn.indexNow];
+            MainWindow thePointSend = theStreamIn.thePlanRoute[theStreamIn.indexNow+1];
+
+            int minCrash = 999;
+            int minCrashControllerIndex = 0;
+            for (int i = 0; i < theControlers.Count; i++)
+            {
+                int crashCountNow = 0;
+                for (int j = 0; j < theControlers[i].charges.Count; j++)
+                {
+                    stream theStream = theControlers[i].charges[j].theStreamforCharge;
+                    if (theStream != null && theStream.indexNow <= theStream.thePlanRoute.Count - 1)
+                    {
+                        MainWindow theStart = theStream.thePlanRoute[theStream.indexNow];
+                        MainWindow theEnd = theStream.thePlanRoute[theStream.indexNow + 1];
+                        if (theStart == thePointGet || theEnd == thePointSend)
+                        {
+                            crashCountNow++;
+                        }
+                    }
+                }
+                if (crashCountNow < minCrash)
+                {
+                    minCrash = crashCountNow;
+                    minCrashControllerIndex = i;
+                }
+            }
+
+            return minCrashControllerIndex;
+        }
 
         int getCPUIndexCanUse()
         {
