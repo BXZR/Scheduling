@@ -51,7 +51,7 @@ namespace EDF
                 flashWindow();
             }
             //
-            int timerWait = getWaitTimeForTheStream(theControlers[CPUIndex], theStream);
+            int timerWait = getWaitTimeForTheStream( theStream);
 
             //Console.WriteLine(this.Title + "get "+ theStream .theName+ " and send to " + CPUIndex);
             //在这里是一个模拟方案
@@ -72,7 +72,7 @@ namespace EDF
 
 
         //获得这个任务的等待时间
-        int getWaitTimeForTheStream(controller theControllerChecked , stream theStreamUsing)
+        int getWaitTimeForTheStream( stream theStreamUsing)
         {
 
             //如果是终点就没有必要了
@@ -85,18 +85,34 @@ namespace EDF
             MainWindow thePointGet = theStreamUsing.thePlanRoute[theStreamUsing.indexNow];
             MainWindow thePointSend = theStreamUsing.thePlanRoute[theStreamUsing.indexNow + 1];
 
-            for (int j = 0; j < theControllerChecked.charges.Count; j++)
+
+            int maxCount = -1000;
+            for(int i = 0; i < theControlers.Count; i++)
             {
-                stream theStream = theControllerChecked.charges[j].theStreamforCharge;
-                if (theStream != null && theStream.indexNow <= theStream.thePlanRoute.Count - 1)
-                {
-                    MainWindow theStart = theStream.thePlanRoute[theStream.indexNow];
-                    MainWindow theEnd = theStream.thePlanRoute[theStream.indexNow + 1];
-                    if (theStart == thePointGet || theEnd == thePointSend)
+                int count = theControlers[i].charges.FindAll(X => X.theStreamforCharge!= null).Count;
+                maxCount = maxCount < count ? count : maxCount;
+
+             }
+
+            for (int k = 0; k < maxCount ; k++)
+            {
+                int timeAdd = 0;
+                for (int i = 0; i < theControlers.Count; i++)
+                {  
+                    List<charge> theCharges = theControlers[i].charges.FindAll(X => X.theStreamforCharge != null);
+
+                    if (theCharges.Count >= k)
+                        continue;
+
+                    stream theStream = theCharges[k].theStreamforCharge;
+                    if (thePointGet == thePointGet || thePointSend == thePointSend)
                     {
-                        timeWait += theControllerChecked.charges[j].ChargeLength;
+                        timeAdd = timeAdd < theStream.timeSlot ? theStream.timeSlot : timeAdd;
                     }
                 }
+
+                timeWait += timeAdd;
+
             }
             return timeWait;
         }
@@ -125,7 +141,7 @@ namespace EDF
                     {
                         MainWindow theStart = theStream.thePlanRoute[theStream.indexNow];
                         MainWindow theEnd = theStream.thePlanRoute[theStream.indexNow + 1];
-                        if (theStart == thePointGet || theEnd == thePointSend)
+                        if (theStart == thePointGet && theEnd == thePointSend)
                         {
                             crashCountNow++;
                         }

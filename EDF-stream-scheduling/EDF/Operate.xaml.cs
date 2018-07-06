@@ -212,7 +212,7 @@ namespace EDF
         private void setStreams()
         {
             //创建一个流
-            stream Stream1 = new EDF.stream(20, 25, "数据流01");
+            stream Stream1 = new EDF.stream(25, 25, "数据流01");
             //设定流的路径
             Stream1.thePlanRoute.Add(thePoints[0]);
             Stream1.thePlanRoute.Add(thePoints[2]);
@@ -223,14 +223,14 @@ namespace EDF
             //起点获取流
             thePoints[0].getStream(Stream1);
 
-            stream Stream2 = new EDF.stream(15, 30, "数据流02");
+            stream Stream2 = new EDF.stream(30, 30, "数据流02");
             Stream2.thePlanRoute.Add(thePoints[0]);
             Stream2.thePlanRoute.Add(thePoints[3]);
             Stream2.thePlanRoute.Add(thePoints[7]);
             Stream2.setMainRoute(true);
             thePoints[0].getStream(Stream2);
 
-            stream Stream3 = new EDF.stream(20, 31, "数据流03");
+            stream Stream3 = new EDF.stream(31, 31, "数据流03");
             Stream3.thePlanRoute.Add(thePoints[0]);
             Stream3.thePlanRoute.Add(thePoints[1]);
             Stream3.thePlanRoute.Add(thePoints[4]);
