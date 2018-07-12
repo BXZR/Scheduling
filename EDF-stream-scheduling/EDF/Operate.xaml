@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EDF"
         mc:Ignorable="d"
-        Title="Operate" Height="278.502" Width="254.072" Closed="Window_Closed" Loaded="Window_Loaded" ResizeMode="NoResize">
+        Title="Operate" Height="273.633" Width="238.491" Closed="Window_Closed" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Grid Background="#FFE6E6E6">
         <Button x:Name="buttonForDemo" Content="Build Map Demo" HorizontalAlignment="Left" Margin="57,122,0,0" VerticalAlignment="Top" Width="130" Click="button_Click" RenderTransformOrigin="1.295,4.847"/>
         <Button x:Name="buttonForRun" Content="Schedule" HorizontalAlignment="Left" Margin="57,157,0,0" VerticalAlignment="Top" Width="130" Click="button_Click_1" IsEnabled="False"/>

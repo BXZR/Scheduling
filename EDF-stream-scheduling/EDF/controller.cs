@@ -202,8 +202,15 @@ namespace EDF
                         if (Operate.isAllOver())
                         {
                             StreamShower A = new StreamShower();
-                            A.streamDataShow.ItemsSource = Operate.thestreamShows;
+                            A.setData(Operate.thestreamShows);
                             A.Show();
+
+                            StreamShower B = new StreamShower();
+                            B.setData(Operate.allChart , this.allTimer);
+                            B.Show();
+
+                            //System.Windows.MessageBox.Show("all timer = "+ this.allTimer);
+
                             Console.WriteLine("OVER");
                         }
                     }
@@ -268,8 +275,13 @@ namespace EDF
                 charges[i].timer();
             }
         }
-        public void forTimer( bool canMissCrash =false)//每一个时间单位都做些什么，算是总的调用方法
+        public void forTimer( bool work = true , bool canMissCrash =false )//每一个时间单位都做些什么，算是总的调用方法
         {
+            if (!work)
+            {
+                allTimer++;
+                return;
+            }
 
                 theMainWindow.textForInformation += "\n"+theCPUName +"  第" + allTimer + "时钟——————————————\n";
                 flashItems();

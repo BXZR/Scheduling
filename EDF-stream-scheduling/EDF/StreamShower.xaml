@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EDF"
         mc:Ignorable="d"
-        Title="StreamShower" Height="300" Width="268.705" ResizeMode="NoResize">
+        Title="Chart" Height="382.54" Width="638.546" ResizeMode="NoResize">
     <Grid>
-        <DataGrid x:Name="streamDataShow" Height="250" Margin="10,10,10,0" VerticalAlignment="Top"/>
+        <DataGrid x:Name="streamDataShow" Height="335" Margin="10,10,10,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

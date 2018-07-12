@@ -19,11 +19,10 @@ namespace EDF
     /// </summary>
     public partial class MainWindow : Window
     {
-        public System.Windows.Threading.DispatcherTimer tm = new System.Windows.Threading.DispatcherTimer();
-        List<controller> theControlers = new List<controller>();
+     
+        public List<controller> theControlers = new List<controller>();
         private bool isAValuableCharge = false;
-        private Picture thePictureWindow;
-        private float timerScale = 1f;
+        private Picture thePictureWindow; 
         private bool isScalling = false;
         int indexForCPUNow = -1;
         public string textForInformation = "";
@@ -31,11 +30,8 @@ namespace EDF
         public MainWindow()
         {
             InitializeComponent();
-            tm.Tick += new EventHandler(tm_Tick);
-            tm.Interval = TimeSpan.FromSeconds(0.01 * timerScale);
+
         }
-
-
 
         public void getStream(stream theStream)
         {
@@ -46,8 +42,10 @@ namespace EDF
 
             for (int i = theControlers[CPUIndex].allTimer; i < theStream.allTimeUse; i++)
             {
-                for (int j = 0; j < theControlers.Count; j++)
-                    theControlers[j].forTimer();
+                //---------------------------------------------------------------------------------
+                 for (int j = 0; j < theControlers.Count; j++)
+                   theControlers[j].forTimer();
+                //---------------------------------------------------------------------------------
                 flashWindow();
             }
             //
@@ -57,7 +55,7 @@ namespace EDF
             //在这里是一个模拟方案
             //一个新的任务需要完成本身的时间和等待的时间才可以将这个流转移到下一个节点
 
-            charge newChargeForBook = new charge(theStream.timeSlot + timerWait, theStream.circleTime, theStream.deadLine, 1, theControlers[CPUIndex].allTimer, theStream.theName + "（第" + theStream.indexNow + "跳）", theControlers[CPUIndex] , false);
+            charge newChargeForBook = new charge(theStream.timeSlot + timerWait, theStream.circleTime, theStream.deadLine, 1, theControlers[CPUIndex].allTimer , theStream.theName + "（第" + theStream.indexNow + "跳）", theControlers[CPUIndex] , false);
             newChargeForBook.theStreamforCharge = theStream;
             newChargeForBook.theMainWindow = this;
 
@@ -165,7 +163,7 @@ namespace EDF
             return indexForCPUNow;
         }
 
-        void flashWindow()
+        public void flashWindow()
         {
             showTextForEDF.Text = this.textForInformation;
             //AllCharge.Items.Clear();
@@ -189,15 +187,7 @@ namespace EDF
             }
 
         }
-        void tm_Tick(object sender, EventArgs e)
-        {
-            for (int i = 0; i < theControlers.Count; i++)
-            {
-                theControlers[i].forTimer();
-            }
-            flashWindow();
 
-        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -304,22 +294,6 @@ namespace EDF
             }
         }
 
-
-        public void makeStart()
-        {
-            tm.Start();
-        }
-
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            tm.Start();
-        }
-
-        private void button4_Click(object sender, RoutedEventArgs e)
-        {
-            tm.Stop();
-        }
-
         private void AllChargeBook_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && e.RightButton == MouseButtonState.Released)
@@ -419,7 +393,7 @@ namespace EDF
                 {
                     theControlers[k].schedulingMode = 3;//进入容错方式（backward -EDF进行调度）
                     MessageBox.Show("使用backward-EDF进行调度");
-                    tm.Stop();
+                    return;
                     theControlers[k].allTimer = 0;
                     while (theControlers[k].allTimer < T)
                     {
@@ -460,26 +434,6 @@ namespace EDF
 
             }
         }
-
-        private void button9_Click(object sender, RoutedEventArgs e)
-        {
-            if (isScalling == false)
-            {
-                isScalling = true;
-                timerScale = 0.2f;
-                //button9.Content = "高速运行";
-                tm.Interval = TimeSpan.FromSeconds(0.5 * timerScale);
-            }
-            else
-            {
-                isScalling = false;
-                //button9.Content = "一般速度";
-                timerScale = 1;
-                tm.Interval = TimeSpan.FromSeconds(0.5 * timerScale);
-            }
-
-        }
-
 
         private bool checkForRM(List<charge> charges)//传入的是已经排好序的任务队列
         {

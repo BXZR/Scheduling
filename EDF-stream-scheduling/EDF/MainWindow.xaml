@@ -8,22 +8,7 @@
     <Grid>
         <GroupBox Header="调度报告" HorizontalAlignment="Left" Margin="10,12,0,10" Name="groupBox3" Width="333" Foreground="White">
             <Grid>
-                <TextBox HorizontalAlignment="Right" Margin="0,7,6,47" Name="showTextForEDF" Width="305" Background="#A9E6FFFF" Text="任务集合" IsReadOnly="True" AcceptsReturn="True" IsEnabled="True" OverridesDefaultStyle="False" AutoWordSelection="True" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
-                <Button Height="30" Margin="49,258,0,0" Name="button1" VerticalAlignment="Top" Click="button1_Click" HorizontalAlignment="Left" Width="45">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/EDF;component/Images/play.png" />
-                    </Button.Background>
-                </Button>
-                <Button Height="30" HorizontalAlignment="Left" Margin="135,258,0,0" Name="button4" VerticalAlignment="Top" Width="45" Click="button4_Click">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/EDF;component/Images/stop.png" />
-                    </Button.Background>
-                </Button>
-                <Button Height="30" HorizontalAlignment="Right" Margin="0,258,52,0" Name="button3" VerticalAlignment="Top" Width="45" Click="button3_Click">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/EDF;component/Images/step.png" />
-                    </Button.Background>
-                </Button>
+                <TextBox HorizontalAlignment="Right" Margin="0,7,6,21" Name="showTextForEDF" Width="305" Background="#A9E6FFFF" Text="任务集合" IsReadOnly="True" AcceptsReturn="True" IsEnabled="True" OverridesDefaultStyle="False" AutoWordSelection="True" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
             </Grid>
         </GroupBox>
     </Grid>

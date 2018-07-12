@@ -49,8 +49,12 @@ namespace EDF
         public static List<stream> theStreams = new List<stream>();
         public static List<MainWindow> thePoints = new List<MainWindow>();
         public static List<streamShowing> thestreamShows = new List<streamShowing>();
-
+        public System.Windows.Threading.DispatcherTimer tm = new System.Windows.Threading.DispatcherTimer();
+        private float timerScale = 1f;
         int pointCount = 10;
+
+        //时间总表
+        public static List<List<int>> allChart = new List<List<int>>();
 
         public static bool isAllOver()
         {
@@ -63,18 +67,64 @@ namespace EDF
         public Operate()
         {
             InitializeComponent();
+
+            tm.Tick += new EventHandler(tm_Tick);
+            tm.Interval = TimeSpan.FromSeconds(0.01 * timerScale);
+
         }
+
+
+        void tm_Tick(object sender, EventArgs e)
+        {
+
+            ForTimer();
+        }
+
+
+        public static void ForTimer()
+        {
+           // Console.WriteLine("hehe======================================================");
+            for (int k = 0; k < thePoints.Count; k++)
+            {
+                for (int i = 0; i < thePoints[k].theControlers.Count; i++)
+                {
+                    //时间
+                    thePoints[k].theControlers[i].forTimer();
+                    //记录
+                    //Console.WriteLine(thePoints[k].theControlers[i].allTimer);
+                    if (thePoints[k].theControlers[i].selectedCharge != null)
+                        allChart[k][thePoints[k].theControlers[i].allTimer] = 1;
+                    //else
+                    //    allChart[k][thePoints[k].theControlers[i].allTimer] = 0;
+
+                }
+                thePoints[k].flashWindow();
+            }
+        }
+
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-
-           
-            if (thePoints.Count > 0)
+            //总表重建
+            allChart = new List<List<int>>();
+            for (int i = 0; i < thePoints.Count; i++)
             {
-                thePoints[1].Show();
-                thePoints[2].Show();
-                thePoints[3].Show();
+                for (int k = 0; k < thePoints[i].theControlers.Count; k++)
+                {
+                    List<int> value = new List<int>();
+                    for (int w = 0; w < 1000000; w++)
+                        value.Add(0);
+                    allChart.Add(value);
+                }
             }
+                 
+           //显示
+           // if (thePoints.Count > 0)
+           // {
+           //     thePoints[1].Show();
+           //     thePoints[2].Show();
+           //     thePoints[3].Show();
+           // }
 
             buttonForDemo.IsEnabled = false;
             buttonForRun.IsEnabled = true;
@@ -157,10 +207,7 @@ namespace EDF
 
         private void startPoints()
         {
-            for (int i = 0; i < thePoints.Count; i++)
-            {
-                thePoints[i].makeStart();
-            }
+            tm.Start();
         }
 
 
@@ -251,5 +298,7 @@ namespace EDF
             makePoints();//传入10就是说有10个节点，请注意数组下标不可以越界的 10对应0——9
             changeCPUCount();
         }
+
+      
     }
 }
